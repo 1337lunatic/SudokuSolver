@@ -28,7 +28,7 @@ namespace SudokuSolver
                                                  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  // 8
                                                  { 1, 0, 5, 0, 6, 0, 0, 0, 0 }}; // 9
 
-            int[,] unsolveable = new int[9, 9] { { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  // 1       // Takes about 0.00150 seconds to complete without debugger
+            int[,] boardEmpty = new int[9, 9] { { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  // 1       // Takes about 0.00150 seconds to complete without debugger
                                                  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  // 2
                                                  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  // 3
                                                  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  // 4
@@ -41,11 +41,11 @@ namespace SudokuSolver
             Stopwatch sw = new Stopwatch();
 
             sw.Start();
-            Solve(unsolveable);                     // Method that solves the sudoku board
+            Solve(boardexpert);                     // Method that solves the sudoku board
             sw.Stop();
             TimeSpan sp = sw.Elapsed;
 
-            PrintBoard(unsolveable);                // Pretty print
+            PrintBoard(boardexpert);                // Pretty print
             
             Console.WriteLine(sp.TotalSeconds);     // Total time measured
         }
@@ -110,7 +110,7 @@ namespace SudokuSolver
         /*
         :Param :
                : board:  A 2D array;
-               : pos:     A custom object for getting the x and y coordinates of the board;
+               : pos:    A custom object for getting the x and y coordinates of the board;
                : num:    The number which is being validated on;
         :Return:
                : Bool;
@@ -140,7 +140,7 @@ namespace SudokuSolver
          :Param :
                 : board: A 2D Array;
          :Return: 
-                : Void
+                : Void;
          */
         static void PrintBoard(int[,] board)
         {
