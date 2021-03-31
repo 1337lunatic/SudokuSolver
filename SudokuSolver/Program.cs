@@ -8,15 +8,15 @@ namespace SudokuSolver
         static void Main(string[] args)
         {
             // Predefined boards for testing the solver
-            int[,] board = new int[9, 9] { { 1, 9, 6, 0, 5, 3, 0, 0, 0 },  // 1             // Takes about 0.00133 seconds to complete without debugger
-                                           { 7, 0, 0, 2, 1, 0, 3, 0, 0 },  // 2
-                                           { 0, 3, 0, 0, 0, 6, 0, 0, 7 },  // 3
-                                           { 0, 7, 0, 0, 0, 2, 4, 1, 0 },  // 4
-                                           { 5, 6, 1, 3, 7, 4, 0, 0, 0 },  // 5
-                                           { 4, 0, 0, 0, 0, 0, 7, 0, 0 },  // 6
-                                           { 6, 1, 0, 0, 2, 0, 5, 0, 9 },  // 7
-                                           { 2, 0, 0, 6, 0, 0, 8, 3, 0 },  // 8
-                                           { 0, 8, 0, 5, 3, 0, 0, 7, 2 }}; // 9
+            int[,] board = new int[9, 9] { { 1, 7, 9, 6, 0, 3, 5, 0, 4 },  // 1             // Takes about 0.00133 seconds to complete without debugger
+                                           { 5, 8, 6, 4, 0, 0, 1, 9, 0 },  // 2
+                                           { 0, 2, 4, 9, 0, 5, 0, 0, 0 },  // 3
+                                           { 0, 0, 0, 2, 0, 0, 9, 0, 0 },  // 4
+                                           { 0, 0, 0, 0, 7, 0, 0, 0, 0 },  // 5
+                                           { 8, 0, 0, 3, 0, 0, 0, 0, 6 },  // 6
+                                           { 0, 0, 0, 1, 3, 2, 0, 4, 0 },  // 7
+                                           { 0, 0, 1, 7, 6, 0, 0, 0, 8 },  // 8
+                                           { 7, 0, 0, 5, 9, 8, 0, 1, 2 }}; // 9
 
             int[,] boardexpert = new int[9, 9] { { 0, 0, 0, 0, 0, 0, 0, 0, 9 },  // 1       // Takes about 0.00260 seconds to complete without debugger
                                                  { 0, 4, 0, 8, 3, 0, 0, 0, 0 },  // 2
@@ -41,12 +41,12 @@ namespace SudokuSolver
             Stopwatch sw = new Stopwatch();
 
             sw.Start();
-            Solve(boardexpert);                     // Method that solves the sudoku board
+            Solve(board);                           // Method that solves the sudoku board
             sw.Stop();
             TimeSpan sp = sw.Elapsed;
 
-            PrintBoard(boardexpert);                // Pretty print
-            
+            PrintBoard(board);                      // Pretty print
+
             Console.WriteLine(sp.TotalSeconds);     // Total time measured
         }
 
@@ -61,21 +61,24 @@ namespace SudokuSolver
         {
             PositionModel pos = new PositionModel();
             pos = Find_empty(board);
-         
+
             // Checks if pos returns null, if it does, then the board is solved.
             if (pos != null)
                 for (int i = 1; i < 10; i++)
+                {
                     // Checks if the number is a valid number
                     if (Valid(board, pos, i))
                     {
                         board[pos.row, pos.col] = i;
 
-                        if (Solve(board))
-                            return true;
-
+                        if (Solve(board))                   // This if statement is a trigger for the backtracking algorithm.
+                            return true;                    // It basically checks if the Solve(board) returns true or not.
+                                                            // So even if a number is available, the backtracking tests if the number is a valid number,
+                                                            // if it isnt, the number will be skipped over due to the backtacking algorithm
                         else
                             board[pos.row, pos.col] = 0;
                     }
+                }
             else
                 return true;
 
